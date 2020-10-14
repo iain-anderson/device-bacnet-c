@@ -1126,10 +1126,25 @@ address_entry_ll *bacnetWhoIs ()
 int bacnetWriteProperty (
   uint32_t deviceInstance, int type, uint32_t instance, int property,
   uint32_t index, uint16_t port, uint8_t priority,
-  BACNET_APPLICATION_DATA_VALUE *value)
+  BACNET_APPLICATION_DATA_VALUE *value, uint64_t mask)
 {
   return_data_t *data = return_data_set (returnDataHead, 0);
   data->errorDetected = false;
+
+  if (mask)
+  {
+    BACNET_APPLICATION_DATA_VALUE *ovalue = bacnetReadProperty (deviceInstance, type, instance, property, index, port);
+    if (ovalue)
+    {
+      value->type.Unsigned_Int |= (ovalue->type.Unsigned_Int & mask);
+      free (ovalue);
+    }
+    else
+    {
+      return_data_remove_by_ptr (returnDataHead, data);
+      return 1;
+    }
+  }
 
   /* Bind to device */
   if (!find_and_bind (data, port, deviceInstance))

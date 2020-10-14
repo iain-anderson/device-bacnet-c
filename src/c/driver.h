@@ -34,7 +34,7 @@ typedef struct stringValueMap
 int bacnetWriteProperty (
   uint32_t deviceInstance, int type, uint32_t instance, int property,
   uint32_t index, uint16_t port, uint8_t priority,
-  BACNET_APPLICATION_DATA_VALUE *value);
+  BACNET_APPLICATION_DATA_VALUE *value, uint64_t mask);
 
 address_entry_ll *bacnetWhoIs (void);
 

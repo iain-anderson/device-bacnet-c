@@ -1,0 +1,50 @@
+{
+  "name": "BAC-5901CE",
+  "manufacturer": "KMC",
+  "model": "BAC-5901CE",
+  "labels": [ "B-AAC" ],
+  "description": "KMC BAC-5901 BACnet General Purpose Controller",
+  "apiVersion": "v2",
+
+  "deviceResources":
+  [
+    { 
+        name: Temperature
+        description: "Get the current temperature"
+        attributes: 
+            { type: "analogInput", instance: "1", property: "presentValue", index: "none"  }
+        properties: 
+            value:
+                { type: "float32", floatEncoding: "eNotation", readWrite: "R" }
+            units:
+                { type: "string", readWrite: "R", defaultValue: "Degrees Fahrenheit" }
+    -
+        name: ActiveCoolingSetpoint
+        description: "The active cooling set point"
+        attributes:
+            { type: "analogValue", instance: "3", property: "presentValue", index: "none"  }
+        properties:
+            value:
+                { type: "float32", floatEncoding: "eNotation", readWrite: "RW" }
+            units:
+                { type: "string", readWrite: "R", defaultValue: "Degrees Fahrenheit" }
+    -
+        name: ActiveHeatingSetpoint
+        description: "The active heating set point"
+        attributes:
+            { type: "analogValue", instance: "4", property: "presentValue", index: "none"  }
+        properties:
+            value:
+                { type: "float32", floatEncoding: "eNotation", readWrite: "RW" }
+            units:
+                { type: "string", readWrite: "R", defaultValue: "Degrees Fahrenheit" }
+
+deviceCommands:
+    -
+        name: ActiveSetpoints
+        get:
+            - { deviceResource: "ActiveCoolingSetpoint" }
+            - { deviceResource: "ActiveHeatingSetpoint" }
+        set:
+            - { deviceResource: "ActiveCoolingSetpoint" }
+            - { deviceResource: "ActiveHeatingSetpoint" }
